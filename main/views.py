@@ -6,8 +6,8 @@ from django.shortcuts import render
 def show_main(request):
     context = {
         "app_name": "Football Shop",
-        "student_name": "Shaen Cliantha",
-        "class_name": "PBP Kelas A",
+        "student_name": "Nazwa Zahra Sausan",
+        "class_name": "PBP D",
     }
     return render(request, "main.html", context)
 
