@@ -187,6 +187,13 @@ Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-b
     10. Menambahkan 2 fungsi baru yakni show_xml_by_id dan show_json_id yang yang menerima parameter berupa request dan id product serta mengembalikan HttpResponse pada views.py. Fungsi ini berfungsi untuk mengembalikan data dalam bentuk XML/JSON berdasarkan id, pada fungsi ini juga saya tambahkan bock try except yang akan mengembalikan HttpResponse daengan status 404 jika data dengan id tertentu tidak ditemukan dalam database.
     11. Menege-push semua kode yang ditambahkan ke github dan pws melalui kode
     """
+    perintah:
+    """
+    git add .
+    git commit -m "Mesage"
+    git push origin master
+    git push pws master
+    """
 
 
 Apakah ada feedback untuk asdos di tutorial 2 yang sudah kalian kerjakan?
