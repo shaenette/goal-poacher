@@ -1,7 +1,9 @@
+import uuid
 from django.db import models
 
 # Create your models here.
 class Product(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     price = models.IntegerField()
     description = models.TextField()
@@ -23,3 +25,8 @@ class Product(models.Model):
             self.save()
             return True
         return False
+
+class Employee(models.Model):
+    name = models.CharField(max_length=255)
+    age = models.IntegerField()
+    persona = models.TextField()
