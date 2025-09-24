@@ -451,8 +451,8 @@ Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-b
     ke berkas main.html setelah kodesesi terakhir login
     27) Menampilkan author yang mencreate product dengan menambahkan porongankode berikut ke berkas product.detail.html:
     '''
-    {% if news.user %}
-    <p>Author: {{ news.user.username }}</p>
+    {% if product.user %}
+        <p>Author: {{ product.user.username }}</p>
     {% else %}
         <p>Author: Anonymous</p>
     {% endif %}
