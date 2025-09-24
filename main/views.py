@@ -57,8 +57,10 @@ def show_main(request):
 
     context = {
         "app_name": "Goal Poacher",
-        "student_name": request.user.username,
+        "username": request.user.username,
+        "student_name": "Nazwa Zahra Sausan",
         "class_name": "PBP D",
+        "npm": "2406397750",
         'product_list' : product_list,
         'last_login': request.COOKIES.get('last_login', 'Never'),
     }
