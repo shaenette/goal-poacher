@@ -1,9 +1,11 @@
+{% extends 'base.html' %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>{{ app_name }}</title>
 </head>
 <body>
+    {% block content %}
     <h1>{{ app_name }}</h1>
     <p>Nama: {{ student_name }}</p>
     <p>Kelas: {{ class_name }}</p>
@@ -11,9 +13,19 @@
     <a href="{% url 'main:add_product' %}">
         <button>+ Add Product</button>
     </a>
-
+    <br>
+    <a href="{% url 'main:logout' %}">
+        <button>Logout</button>
+    </a>
+   <h5>Sesi terakhir login: {{ last_login }}</h5>
     <hr>
-
+    <a href="?filter=all">
+        <button type="button">All Articles</button>
+    </a>
+    <a href="?filter=my">
+        <button type="button">My Articles</button>
+    </a> 
+    <br><br>
     <h2>Daftar Produk</h2>
     {% if not product_list %}
     <p>Belum ada produk yang terdaftar.</p>
@@ -37,5 +49,6 @@
         <hr>
         {% endfor %}
     {% endif %}
+    {% endblock content %}
 </body>
 </html>
