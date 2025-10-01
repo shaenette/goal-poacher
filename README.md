@@ -460,6 +460,50 @@ Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-b
     28) Melakukan add, commit, push ke github dan pws
     29) Menambahkan 2 username dan 3 product ke local host untuk keperluan penilaian.
 
+#=======TUGAS 5=======
+Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+    Ketika ada beberapa CSS selector yang berlaku pada elemen HTML yang sama, browser akan menentukan gaya mana yang dipakai berdasarkan spesifisitas (specificity) dan urutan penulisan. Secara hierarki, yang paling tinggi prioritasnya adalah inline style (CSS yang ditulis langsung pada atribut style di elemen HTML). Setelah itu, selector ID memiliki tingkat prioritas lebih tinggi dibandingkan selector lain. Di bawahnya, ada class selector, attribute selector, dan pseudo-class yang memiliki bobot menengah. Paling rendah adalah element/tag selector dan pseudo-element. Jika ada dua aturan dengan tingkat spesifisitas yang sama, maka aturan yang ditulis paling akhir dalam stylesheet akan dipakai, karena sifat CSS adalah cascading.
+
+Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!
+    Responsive design itu penting karena pengguna mengakses web bukan hanya dari laptop atau PC saja, tetapi juga lewat HP, tablet, bahkan layar dengan ukuran yang beda-beda. Jika web tidak dirancang responsif, tampilan bisa berantakan, seperti teks terlalu kecil, tombol susah ditekan, atau elemen overlap satu sama lain. Dengan responsive design, layout web bisa otomatis menyesuaikan ukuran layar, sehingga pengalaman pengguna (user experience) tetap nyaman dan konsisten di perangkat apa pun.
+
+    Contohnya, aplikasi seperti YouTube atau Facebook udah menerapkan responsive design. Jika dibuka di laptop, tampilannya pakai layout lebar dengan sidebar dan konten di tengah. Namun, ketika dibuka lewat HP, tampilannya berubah jadi lebih simple, menu masuk ke ikon hamburger, video tampil fullscreen, dan teks ukurannya pas buat layar kecil. Ini bikin pengguna tidak perlu zoom in/out untuk mengakses konten.
+
+    Sebaliknya, ada beberapa website lama, misalnya situs berita versi jadul atau web kampus yang masih pakai template lama, yang belum menerapkan responsive design. Kalau dibuka lewat HP, teksnya bisa terlalu kecil, tabel melebar keluar layar, atau tombol navigasi jadi susah ditekan. 
+
+Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+    Margin adalah jarak di luar elemen yang berfungsi untuk memberikan ruang antara satu elemen dengan elemen lainnya. Border adalah garis tepi yang mengelilingi elemen, yang bisa diatur ketebalan, warna, maupun jenis garisnya sehingga elemen terlihat lebih jelas batasnya. Sementara itu, padding adalah ruang di dalam elemen yang memisahkan konten dengan garis tepinya, sehingga isi tidak terlalu menempel pada border. Implementasinya dapat dilakukan dengan menambahkan properti CSS pada elemen, misalnya margin: 20px;, border: 2px solid black;, dan padding: 15px;.
+
+Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+    Flexbox dan Grid Layout adalah fitur dalam CSS yang dipakai untuk mengatur tata letak elemen di halaman web. Flexbox (Flexible Box Layout) dirancang untuk mengatur elemen dalam satu dimensi, baik itu baris maupun kolom. Dengan flexbox, kita bisa dengan mudah mengatur posisi, arah, serta distribusi ruang antar elemen agar lebih responsif tanpa perlu banyak perhitungan manual. Misalnya, ketika ingin membuat menu navigasi horizontal yang rata tengah atau tombol-tombol yang otomatis menyesuaikan jarak.
+
+    Sementara itu, Grid Layout lebih cocok untuk tata letak dua dimensi karena memungkinkan pengaturan elemen berdasarkan baris dan kolom sekaligus. Grid sangat berguna untuk membuat layout halaman yang kompleks, seperti membagi halaman menjadi header, sidebar, konten utama, dan footer dengan proporsi yang rapi. Dengan grid, pengembang bisa menentukan ukuran kolom dan baris secara fleksibel, serta memposisikan elemen di dalamnya sesuai kebutuhan.
+
+Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+    Sebagai catatan, saya memilih untuk menggunakan tailwind dalam implemetasi CSS saya, berikut adalah step-by-step yang saya lakukan:
+    1) Menambahkan script tailwind ke dalam base html cdn pada bagian head
+    2) Menambahkan fungsi edit_product dan_delete product pada views.py yang ada di directory main, kedua fungsi ini menerima parameter berupa request dan id
+    3) Membuat berkas edit_product.html di directori main/templates dan mengisi berkasnya dengan kode yang sudah diberikan di tutorial
+    4) Mengimport fungsi edit_product dan delete product ke urls.py, kemudian menambahkan url path untuk masing-masing fungsi tersebut
+    5) Meng-update berkas main.html untuk menampilkan button edit dan delete (menggunakan hyperlink)
+    6) Membuat berkas baru "navbar.html" pada folder templates di direktori root. Mengisi berkasnya sesuai dengan preferensi.
+    7) Menambahkan template tersebut, ke main.html dengan memggunakan tags include diikuti dengan nama templatenya
+    8) Menambahkan konfigurasi 'whitenoise.middleware.WhiteNoiseMiddleware'ke variable "MIDDLEWARE" di settings.py
+    9) Mengupdate variable static_url di settings.py dengan kode:
+    """
+    STATIC_URL = '/static/'
+    if DEBUG:
+        STATICFILES_DIRS = [
+            BASE_DIR / 'static' 
+        ]
+    else:
+        STATIC_ROOT = BASE_DIR / 'static' 
+    """
+    10) Membuat direktori statics dengan subdirektori css dan menambahkan file global.css di dalamnya kemudian memodifikasi filenya dengan kode yang diisi sesuai dengan preferensi tampilan.
+    11) Menghubungkan file global.css dan script tailwind ke base.html dengan menambahkan blok <script> </script> dan <link> </link>
+    12) Styling semua berkas HTML agar menampilkan tampilan dengan warna dan layout yang diharapkan.
+    13) Saya juga enambahkan static image untuk ditampikan ketika belum ada product yang di-upload user, dan menambahkannya ke direktori static/image
+
 References:
 Fazry. (2024, April 12). Pengenalan Django: Membangun Aplikasi Web Pertama Anda. Rumah Coding. Retrieved from https://rumahcoding.co.id/pengenalan-django-membangun-aplikasi-web-pertama-anda/
 

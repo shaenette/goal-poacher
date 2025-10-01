@@ -1,25 +1,73 @@
 {% extends 'base.html' %}
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"/><title>{{ product.name }}</title></head>
-<body>
-  {% block content %}
-  <a href="{% url 'main:show_main' %}"><button>← Back</button></a>
-  <h1>{{ product.name }}</h1>
-  {% if product.thumbnail %}
-    <p><img src="{{ product.thumbnail }}" alt="{{ product.name }}" width="200"></p>
-  {% endif %}
-  <p>{{ product.description }}</p>
-  <p>Price: Rp {{ product.price }}</p>
-  <p>Category: {{ product.category }}</p>
-  <p>Stock: {{ product.stock }}</p>
+{% load static %}
 
-  {% if product.user %}
-    <p>Author: {{ product.user.username }}</p>
-  {% else %}
-    <p>Author: Anonymous</p>
-  {% endif %}
+{% block meta %}
+  <title>{{ product.name }} - Goal Poacher</title>
+{% endblock meta %}
 
-  {% endblock content %}
-</body>
-</html>
+{% block content %}
+<div class="bg-gray-50 w-full min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- Back Button -->
+    <a href="{% url 'main:show_main' %}" 
+      class="inline-flex items-center bg-[#008000] text-white px-4 py-2 rounded-md font-medium hover:bg-[#006400] transition-colors mb-6">
+      ← Back to Home
+    </a>
+
+    <!-- Product Card -->
+    <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2">
+        
+        <!-- Thumbnail -->
+        <div class="bg-gray-100 flex items-center justify-center">
+          {% if product.thumbnail %}
+            <img src="{{ product.thumbnail }}" alt="{{ product.name }}" 
+                 class="w-full h-full object-cover md:rounded-l-xl">
+          {% else %}
+            <img src="{% static 'image/empty=product.jpg' %}" alt="No image available" 
+                 class="w-64 h-64 object-contain opacity-70">
+          {% endif %}
+        </div>
+
+        <!-- Details -->
+        <div class="p-8 flex flex-col">
+          <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ product.name }}</h1>
+          <p class="text-gray-600 mb-6 leading-relaxed">{{ product.description }}</p>
+
+          <div class="space-y-2 text-gray-700 text-sm">
+            <p><span class="font-semibold">💰 Price:</span> 
+              <span class="text-green-600 font-medium">Rp {{ product.price }}</span>
+            </p>
+            <p><span class="font-semibold">🏷 Category:</span> {{ product.get_category_display }}</p>
+            <p>
+              <span class="font-semibold">📦 Stock:</span> 
+              {% if product.is_out_of_stock %}
+                <span class="text-red-600 font-medium">Out of stock</span>
+              {% else %}
+                {{ product.stock }}
+              {% endif %}
+            </p>
+              <p><span class="font-semibold">👤 Seller:</span> {{ product.user.username }}</p>
+          </div>
+
+          <!-- Action Buttons -->
+          {% if user.is_authenticated and product.user == user %}
+          <div class="mt-8 flex space-x-3">
+            <a href="{% url 'main:edit_product' product.id %}" 
+               class="px-5 py-2 bg-yellow-400 text-white rounded-lg font-medium hover:bg-yellow-500 transition-colors">
+              ✎ Edit
+            </a>
+            <a href="{% url 'main:delete_product' product.id %}" 
+               class="px-5 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors">
+              🗑 Delete
+            </a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock content %}

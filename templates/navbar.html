@@ -1,0 +1,102 @@
+<nav class="fixed top-0 left-0 w-full bg-[#004225] border-b border-[#0B0C10] shadow-md z-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+
+      <!-- Brand -->
+      <div class="flex items-center">
+        <h1 class="text-xl font-bold" style="color:#FFD700;">
+          <span class="text-[#F5F5F5]">Goal</span> Poacher
+        </h1>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="/" class="text-[#F5F5F5] hover:text-[#FFD700] font-medium transition-colors">
+          Home
+        </a>
+        
+        <!-- Dropdown Produk per Kategori -->
+        <div class="relative group">
+        <a href="{% url 'main:add_product' %}" class="text-[#F5F5F5] hover:text-[#FFD700] font-medium transition-colors">
+          Add Product
+        </a>
+        </div>
+      </div>
+
+      <!-- Desktop User Section -->
+      <div class="hidden md:flex items-center space-x-6">
+        {% if user.is_authenticated %}
+          <div class="text-right">
+            <div class="text-sm font-medium text-[#FFD700]">{{ username }}</div>
+            <div class="text-xs text-[#F5F5F5]">{{ npm }} - {{ class_name }}</div>
+          </div>
+          <a href="{% url 'main:logout' %}" class="text-red-500 hover:text-red-600 font-medium transition-colors">
+            Logout
+          </a>
+        {% else %}
+          <a href="{% url 'main:login' %}" class="text-[#F5F5F5] hover:text-[#FFD700] font-medium transition-colors">
+            Login
+          </a>
+          <a href="{% url 'main:register' %}" class="bg-[#FFD700] hover:bg-yellow-400 text-[#0B0C10] px-4 py-2 rounded font-medium transition-colors">
+            Register
+          </a>
+        {% endif %}
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden flex items-center">
+        <button class="mobile-menu-button p-2 text-[#F5F5F5] hover:text-[#FFD700] transition-colors">
+          <span class="sr-only">Open menu</span>
+          <div class="w-6 h-6 flex flex-col justify-center items-center">
+            <span class="bg-current block h-0.5 w-6 rounded-sm"></span>
+            <span class="bg-current block h-0.5 w-6 rounded-sm my-0.5"></span>
+            <span class="bg-current block h-0.5 w-6 rounded-sm"></span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu hidden md:hidden bg-[#F5F5F5] border-t border-[#0B0C10]">
+    <div class="px-6 py-4 space-y-4">
+
+      <!-- Mobile Navigation Links -->
+      <div class="space-y-1">
+        <a href="/" class="block text-[#0B0C10] hover:text-[#FFD700] font-medium py-2 transition-colors">
+          Home
+        </a>
+        <a href="{% url 'main:add_product' %}" class="block text-[#0B0C10] hover:text-[#FFD700] font-medium py-2 transition-colors">
+          Add Product
+        </a>
+      </div>
+
+
+      <!-- Mobile User Section -->
+      <div class="border-t border-[#0B0C10] pt-4">
+        {% if user.is_authenticated %}
+          <div class="mb-3">
+            <div class="font-medium text-[#0B0C10]">{{ username }}</div>
+            <div class="text-sm text-gray-500">{{ npm }} - {{ class_name }}</div>
+          </div>
+          <a href="{% url 'main:logout' %}" class="block text-red-600 hover:text-red-700 font-medium py-2 transition-colors">
+            Logout
+          </a>
+        {% else %}
+          <a href="{% url 'main:login' %}" class="block text-[#0B0C10] hover:text-[#FFD700] font-medium py-2 transition-colors">
+            Login
+          </a>
+          <a href="{% url 'main:register' %}" class="block bg-[#FFD700] hover:bg-yellow-400 text-[#0B0C10] font-medium py-2 px-4 rounded text-center transition-colors mt-2">
+            Register
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const btn = document.querySelector("button.mobile-menu-button");
+    const menu = document.querySelector(".mobile-menu");
+    btn.addEventListener("click", () => menu.classList.toggle("hidden"));
+  </script>
+</nav>
