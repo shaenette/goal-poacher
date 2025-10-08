@@ -20,9 +20,20 @@
     </div>
 
     <!-- Button to open modal -->
-    <button onclick="showModal()" class="inline-flex items-center px-4 py-2 bg-white text-green-600 font-semibold outline outline-2 outline-green-600 outline-offset-[-2px] rounded-md hover:bg-green-600 hover:text-white transition-colors mb-4">
-      Create News by AJAX
-    </button>
+  
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="flex items-center space-x-3 mb-4">
+        <button onclick="showModal()" class="inline-flex items-center px-4 py-2 bg-white text-green-600 font-semibold outline outline-2 outline-green-600 outline-offset-[-2px] rounded-md hover:bg-green-600 hover:text-white transition-colors">
+            Add Product Using AJAX
+        </button>
+
+        <button id="manualRefreshBtn" class="inline-flex items-center justify-center p-3 bg-[#004225] text-white font-semibold rounded-md hover:bg-[#006b3b] transition-colors">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.205 15m14.329 1.205A8.001 8.001 0 0120.595 10m-4.14 5.39L16 16.5m-3.59-.59L12 11.5m-3.59 4.905L8 16.5m-1.79-1.79L6.5 14"></path>
+            🔄
+        </button>
+    </div>
+
+    </div>
 
     <!-- Filter Section -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-10 bg-white shadow-sm rounded-xl border border-gray-200 p-5">
@@ -86,6 +97,7 @@
   const productGridContainer = document.getElementById('grid');
   const showAllProductsButton = document.getElementById('filter-all');
   const showMyProductsButton = document.getElementById('filter-my');
+    const manualRefreshButton = document.getElementById('manualRefreshBtn'); 
 
   // State Variables
   let activeFilter = 'all';
@@ -267,9 +279,14 @@
     showAllProductsButton.addEventListener('click', handleShowAllProductsClick);
     showMyProductsButton.addEventListener('click', handleShowMyProductsClick);
     
+    if (manualRefreshButton) {
+        // Panggil fungsi fetchProductsFromServer saat tombol diklik
+        manualRefreshButton.addEventListener('click', fetchProductsFromServer);
+    }
+
     fetchProductsFromServer();
   }
-
+  
   // Start application
   initializeProductPage();
 
