@@ -11,63 +11,195 @@
 
     <!-- Back Button -->
     <a href="{% url 'main:show_main' %}" 
-      class="inline-flex items-center bg-[#008000] text-white px-4 py-2 rounded-md font-medium hover:bg-[#006400] transition-colors mb-6">
+       class="inline-flex items-center bg-[#008000] text-white px-4 py-2 rounded-md font-medium hover:bg-[#006400] transition-colors mb-6">
       ← Back to Home
     </a>
 
-    <!-- Product Card -->
-    <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+    <!-- Loading State -->
+    <div id="loading-state" class="bg-white rounded-xl shadow-md border border-gray-200 p-12 text-center">
+      <svg class="animate-spin h-8 w-8 text-green-600 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+      </svg>
+      <p class="text-gray-600 mt-3">Loading product details...</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-state" class="bg-white rounded-xl shadow-md border border-gray-200 p-12 text-center hidden">
+      <div class="w-16 h-16 mx-auto mb-4">
+        <div class="text-red-500 text-5xl">⚠️</div>
+      </div>
+      <h3 class="text-lg font-medium text-gray-900 mb-2">Failed to load product</h3>
+      <p class="text-gray-500">Please try again later.</p>
+    </div>
+
+    <!-- Product Content -->
+    <article id="product-content" class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden hidden">
+
+      <header class="p-8 border-b border-gray-100">
+        <h1 id="product-name" class="text-3xl font-bold text-gray-900 mb-2">{{ product.name }}</h1>
+        <p class="text-sm text-gray-500">
+          Sold by <span id="product-seller">{{ product.user.username }}</span> • 
+          <time datetime="{{ product.date_added|date:'Y-m-d' }}">Added {{ product.date_added|date:'M d, Y' }}</time>
+        </p>
+      </header>
+
       <div class="grid grid-cols-1 md:grid-cols-2">
-        
         <!-- Thumbnail -->
-        <div class="bg-gray-100 flex items-center justify-center">
+        <figure id="product-thumbnail" class="bg-gray-100 flex items-center justify-center">
           {% if product.thumbnail %}
             <img src="{{ product.thumbnail }}" alt="{{ product.name }}" 
-                 class="w-full h-full object-cover md:rounded-l-xl">
+                class="w-full h-full object-cover md:rounded-l-xl">
           {% else %}
-            <img src="{% static 'image/empty=product.jpg' %}" alt="No image available" 
-                 class="w-64 h-64 object-contain opacity-70">
+            <div class="w-64 h-64 bg-gray-300 flex items-center justify-center text-gray-500">No Image</div>
           {% endif %}
-        </div>
+        </figure>
 
         <!-- Details -->
         <div class="p-8 flex flex-col">
-          <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ product.name }}</h1>
-          <p class="text-gray-600 mb-6 leading-relaxed">{{ product.description }}</p>
+          <p id="product-description" class="text-gray-600 mb-6 leading-relaxed">{{ product.description }}</p>
 
-          <div class="space-y-2 text-gray-700 text-sm">
+          <section class="space-y-2 text-gray-700 text-sm">
             <p><span class="font-semibold">💰 Price:</span> 
-              <span class="text-green-600 font-medium">Rp {{ product.price }}</span>
+              <span id="product-price" class="text-green-600 font-medium">Rp {{ product.price }}</span>
             </p>
-            <p><span class="font-semibold">🏷 Category:</span> {{ product.get_category_display }}</p>
-            <p>
-              <span class="font-semibold">📦 Stock:</span> 
-              {% if product.is_out_of_stock %}
-                <span class="text-red-600 font-medium">Out of stock</span>
-              {% else %}
-                {{ product.stock }}
-              {% endif %}
+            <p><span class="font-semibold">🏷 Category:</span> <span id="product-category">{{ product.get_category_display }}</span></p>
+            <p><span class="font-semibold">📦 Stock:</span> 
+              <span id="product-stock">
+                {% if product.is_out_of_stock %}
+                  <span class="text-red-600 font-medium">Out of stock</span>
+                {% else %}
+                  {{ product.stock }}
+                {% endif %}
+              </span>
             </p>
-              <p><span class="font-semibold">👤 Seller:</span> {{ product.user.username }}</p>
-          </div>
+          </section>
 
           <!-- Action Buttons -->
-          {% if user.is_authenticated and product.user == user %}
-          <div class="mt-8 flex space-x-3">
-            <a href="{% url 'main:edit_product' product.id %}" 
-               class="px-5 py-2 bg-yellow-400 text-white rounded-lg font-medium hover:bg-yellow-500 transition-colors">
+          <footer id="product-actions" class="mt-8 flex space-x-3 {% if not user.is_authenticated or product.user != user %}hidden{% endif %}">
+            <a id="edit-product-btn" href="{% url 'main:edit_product' product.id %}" 
+              class="px-5 py-2 bg-yellow-400 text-white rounded-lg font-medium hover:bg-yellow-500 transition-colors">
               ✎ Edit
             </a>
-            <a href="{% url 'main:delete_product' product.id %}" 
-               class="px-5 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors">
+            <a id="delete-product-btn" href="{% url 'main:delete_product' product.id %}" 
+              class="px-5 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors">
               🗑 Delete
             </a>
-          </div>
-          {% endif %}
+          </footer>
         </div>
       </div>
-    </div>
+    </article>
 
   </div>
 </div>
+
+<script>
+  // === Configuration ===
+  const PRODUCT_ID = "{{ product.id }}";
+  const PRODUCT_DETAIL_ENDPOINT = `{% url 'main:show_json_by_id' '00000000-0000-0000-0000-000000000000' %}`
+      .replace('00000000-0000-0000-0000-000000000000', PRODUCT_ID);
+
+  // === DOM Elements ===
+  const loadingState = document.getElementById('loading-state');
+  const errorState = document.getElementById('error-state');
+  const productContent = document.getElementById('product-content');
+  const productThumbnail = document.getElementById('product-thumbnail');
+  const productName = document.getElementById('product-name');
+  const productDescription = document.getElementById('product-description');
+  const productPrice = document.getElementById('product-price');
+  const productCategory = document.getElementById('product-category');
+  const productStock = document.getElementById('product-stock');
+  const productSeller = document.getElementById('product-seller');
+
+  // === State Management ===
+  function showState(state) {
+    loadingState.classList.toggle('hidden', state !== 'loading');
+    errorState.classList.toggle('hidden', state !== 'error');
+    productContent.classList.toggle('hidden', state !== 'ready');
+  }
+
+  // === Category Label Formatter ===
+  function getCategoryLabel(categoryCode) {
+    const categoryMapping = {
+      shoes: 'Shoes',
+      jersey: 'Jersey',
+      ball: 'Ball',
+      merchandise: 'Merchandise',
+      accessory: 'Accessory',
+      other: 'Other',
+    };
+    return categoryMapping[categoryCode] || categoryCode;
+  }
+
+  // === Render Product ===
+  function renderProduct(product) {
+    // 🏷 Product Name
+    productName.textContent = product.name || 'Unnamed Product';
+    document.title = `${product.name} - Product Detail`;
+
+    // 🖼 Thumbnail
+    productThumbnail.innerHTML = '';
+    if (product.thumbnail) {
+      const img = document.createElement('img');
+      img.src = product.thumbnail;
+      img.alt = product.name;
+      img.className = 'w-full h-full object-cover md:rounded-l-xl';
+      productThumbnail.appendChild(img);
+    } else {
+      productThumbnail.innerHTML = `
+        <div class="w-64 h-64 bg-gray-300 flex items-center justify-center text-gray-500">
+          No Image
+        </div>`;
+    }
+
+    // 📜 Description
+    productDescription.textContent = product.description || 'No description available.';
+
+    // 💰 Price
+    if (product.price !== undefined && product.price !== null) {
+      productPrice.textContent = 'Rp ' + Number(product.price).toLocaleString();
+    } else {
+      productPrice.textContent = 'Not available';
+    }
+
+    // 🏷 Category
+    productCategory.textContent = getCategoryLabel(product.category);
+
+    // 📦 Stock
+    if (product.stock === 0 || product.is_out_of_stock) {
+      productStock.innerHTML = `<span class="text-red-600 font-medium">Out of stock</span>`;
+    } else {
+      productStock.textContent = product.stock;
+    }
+
+    // 👤 Seller
+    productSeller.textContent = product.user_username || 'Unknown Seller';
+  }
+
+  // === Fetch Product Detail ===
+  async function loadProductDetail() {
+    try {
+      showState('loading');
+
+      const response = await fetch(PRODUCT_DETAIL_ENDPOINT, {
+        headers: { 'Accept': 'application/json' },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch product detail');
+      }
+
+      const productData = await response.json();
+      renderProduct(productData);
+      showState('ready');
+    } catch (error) {
+      console.error('Error loading product detail:', error);
+      showState('error');
+    }
+  }
+
+  // === Initialize Page ===
+  loadProductDetail();
+</script>
+
 {% endblock content %}

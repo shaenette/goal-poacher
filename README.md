@@ -504,6 +504,45 @@ Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-b
     12) Styling semua berkas HTML agar menampilkan tampilan dengan warna dan layout yang diharapkan.
     13) Saya juga enambahkan static image untuk ditampikan ketika belum ada product yang di-upload user, dan menambahkannya ke direktori static/image
 
+#=======TUGAS 6=========
+Apa perbedaan antara synchronous request dan asynchronous request?
+    Perbedaan utama antara synchronous request dan asynchronous request terletak pada cara keduanya menangani proses komunikasi antara client dan server.
+
+    Pada synchronous request, ketika pengguna mengirim permintaan ke server (misalnya dengan menekan tombol submit), browser akan menunggu respons dari server terlebih dahulu sebelum dapat melakukan tindakan lain. Selama proses ini berlangsung, halaman web biasanya tidak dapat diakses atau berinteraksi, dan jika respons sudah diterima, halaman akan dimuat ulang (reload) untuk menampilkan hasilnya. Mekanisme ini membuat proses terasa lebih lambat dan kurang efisien, terutama jika data yang diminta cukup besar.
+
+    Sementara itu, asynchronous request bekerja dengan cara yang lebih efisien. Permintaan dikirim ke server tanpa menghentikan interaksi pengguna di halaman web, dan ketika respons diterima, hasilnya langsung ditampilkan tanpa perlu memuat ulang seluruh halaman. Contohnya adalah penggunaan AJAX (Asynchronous JavaScript and XML), yang memungkinkan data dikirim dan diterima di latar belakang, sehingga halaman tetap interaktif selama proses berlangsung.
+
+
+Bagaimana AJAX bekerja di Django (alur request–response)?
+    AJAX di Django bekerja dengan cara mengirim dan menerima data antara client dan server secara asinkron, tanpa perlu memuat ulang seluruh halaman. Alur kerjanya dimulai ketika pengguna melakukan suatu aksi di halaman web, misalnya menekan tombol atau mengisi form. JavaScript di sisi client kemudian menangkap aksi tersebut dan mengirimkan permintaan (request) ke server menggunakan metode seperti fetch() atau XMLHttpRequest.
+
+    Permintaan tersebut dikirim ke endpoint Django, biasanya berupa fungsi view yang secara khusus dibuat untuk menangani request AJAX. View tersebut akan memproses data yang diterima, misalnya menyimpan data ke dalam database, mengambil data tertentu, atau melakukan validasi. Setelah proses selesai, Django akan mengembalikan respons dalam format JSON, bukan dalam bentuk halaman HTML utuh seperti pada render biasa.
+
+    Selanjutnya, JavaScript di sisi client menerima data JSON dari server tersebut, lalu memperbarui bagian tertentu dari halaman web berdasarkan data yang diterima, tanpa perlu me-reload seluruh halaman. Dengan mekanisme ini, interaksi antara pengguna dan aplikasi web menjadi lebih cepat, efisien, dan dinamis, karena komunikasi dengan server dilakukan di latar belakang.
+
+Apa keuntungan menggunakan AJAX dibandingkan render biasa di Django?
+    Keuntungan utama penggunaan AJAX dibandingkan dengan metode render biasa di Django terletak pada efisiensi dan interaktivitas sistem. AJAX memungkinkan proses pengambilan dan pengiriman data antara client dan server dilakukan tanpa perlu memuat ulang seluruh halaman web. Dengan demikian, waktu respons menjadi lebih cepat dan pengalaman pengguna terasa lebih halus serta dinamis. Misalnya, ketika pengguna menambahkan data baru, hanya bagian tertentu dari halaman yang diperbarui, bukan keseluruhan tampilan.
+
+    Selain itu, penggunaan AJAX juga lebih hemat sumber daya karena data yang dikirim dan diterima biasanya dalam format ringan seperti JSON, bukan seluruh halaman HTML. Hal ini membantu mengurangi beban server sekaligus mempercepat proses komunikasi antara frontend dan backend.
+
+
+Bagaimana cara memastikan keamanan saat menggunakan AJAX untuk fitur Login dan Register di Django?
+    Untuk memastikan keamanan saat menggunakan AJAX pada fitur Login dan Register di Django, ada beberapa hal penting yang perlu diperhatikan. Pertama, selalu pastikan bahwa setiap request AJAX yang dikirim dari client menyertakan CSRF token. Django secara default memiliki mekanisme perlindungan terhadap serangan CSRF (Cross-Site Request Forgery), sehingga token ini harus dikirim bersama setiap permintaan POST untuk memastikan bahwa request memang berasal dari halaman yang sah. Token tersebut biasanya disisipkan dalam header request atau sebagai bagian dari data form yang dikirim.
+
+    Kedua, semua data yang diterima dari client harus tetap divalidasi di sisi server. Meskipun validasi di sisi frontend penting untuk pengalaman pengguna, validasi backend wajib dilakukan untuk mencegah pengguna berusaha mengirim data berbahaya secara langsung melalui request. Django menyediakan form validation dan model validation yang bisa dimanfaatkan untuk ini.
+
+    Ketiga, pastikan komunikasi antara client dan server dilakukan melalui HTTPS, bukan HTTP biasa. HTTPS mengenkripsi data yang dikirim, termasuk informasi sensitif seperti username dan password, sehingga mencegah pencurian data oleh pihak ketiga.
+
+    Selain itu, penting juga untuk tidak mengembalikan informasi sensitif dalam respons AJAX, seperti detail error yang terlalu spesifik atau data akun pengguna lain. Cukup kirimkan pesan umum, misalnya “Login gagal” atau “Email sudah terdaftar”, tanpa mengungkapkan detail internal sistem.
+
+Bagaimana AJAX mempengaruhi pengalaman pengguna (User Experience) pada website?
+    AJAX memberikan pengaruh yang sangat positif terhadap pengalaman pengguna (User Experience) pada sebuah website. Dengan menggunakan AJAX, proses komunikasi antara client dan server dapat dilakukan di latar belakang tanpa perlu memuat ulang seluruh halaman. Hal ini membuat interaksi di website terasa lebih cepat, lancar, dan responsif, karena pengguna tidak perlu menunggu halaman direload setiap kali melakukan suatu aksi, seperti mengirim form, menambah data, atau memuat konten baru.
+
+    Selain meningkatkan kecepatan, AJAX juga membuat tampilan website terasa lebih dinamis. Misalnya, ketika pengguna menekan tombol “Simpan” atau “Tambah Produk”, hasilnya bisa langsung muncul di halaman tanpa berpindah ke halaman lain. Pengalaman seperti ini membuat pengguna merasa lebih nyaman dan efisien dalam berinteraksi dengan sistem.
+
+    AJAX juga membantu mengurangi gangguan visual yang biasanya terjadi akibat reload halaman penuh. Dengan hanya memperbarui bagian tertentu dari halaman, fokus pengguna tetap terjaga, sehingga alur penggunaan website terasa lebih alami.
+
+
 References:
 Fazry. (2024, April 12). Pengenalan Django: Membangun Aplikasi Web Pertama Anda. Rumah Coding. Retrieved from https://rumahcoding.co.id/pengenalan-django-membangun-aplikasi-web-pertama-anda/
 
