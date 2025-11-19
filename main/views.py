@@ -1,4 +1,6 @@
 import datetime
+import requests
+import json
 from django.utils.html import strip_tags
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -188,3 +190,53 @@ def add_product_entry_ajax(request):
     new_product.save()
 
     return HttpResponse(b"CREATED", status=201)
+
+def proxy_image(request):
+    image_url = request.GET.get('url')
+    if not image_url:
+        return HttpResponse('No URL provided', status=400)
+    
+    try:
+        response = requests.get(image_url, timeout=10)
+        response.raise_for_status()
+        
+        return HttpResponse(
+            response.content,
+            content_type=response.headers.get('Content-Type', 'image/jpeg')
+        )
+    except requests.RequestException as e:
+        return HttpResponse(f'Error fetching image: {str(e)}', status=500)
+    
+@csrf_exempt
+def create_product_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        name = strip_tags(data.get("name", ""))
+        price = data.get("price", 0)
+        description = strip_tags(data.get("description", ""))
+        thumbnail = data.get("thumbnail", "")
+        category = data.get("category", "others")
+        is_featured = data.get("is_featured", False)
+        stock = data.get("stock", 0)
+
+        user = request.user if request.user.is_authenticated else None
+
+        product = Product.objects.create(
+            user=user,
+            name=name,
+            price=price,
+            description=description,
+            thumbnail=thumbnail,
+            category=category,
+            is_featured=is_featured,
+            stock=stock,
+        )
+
+        return JsonResponse({
+            "status": "success",
+            "id": product.id,
+            "message": "Product created"
+        }, status=201)
+
+    return JsonResponse({"status": "error", "message": "Invalid method"}, status=405)
